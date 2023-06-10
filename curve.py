@@ -14,6 +14,10 @@ class Scalar(Field):
     @classmethod
     def root_of_unity(cls, group_order: int):
         return Scalar(5) ** ((cls.field_modulus - 1) // group_order)
+        # NOTE:
+        # fermat's little theorem: a^(p-1) = 1 mod p
+        # Scalar mod field_modulus. let it be p,
+        # 5 coprime to field_modulus, so 5^(field_modulus-1) = 1 mod field_modulus
 
     # Gets the full list of roots of unity of a given group order
     @classmethod

@@ -35,7 +35,7 @@ class AssemblyEqn:
     coeffs: dict[Optional[str], int]
 
     def L(self) -> Scalar:
-        return Scalar(-self.coeffs.get(self.wires.L, 0))
+        return Scalar(-self.coeffs.get(self.wires.L, 0))  # TODO: why negative sign?
 
     def R(self) -> Scalar:
         if self.wires.R != self.wires.L:
@@ -68,6 +68,9 @@ class AssemblyEqn:
 # Note that this is a recursive algo, so the input can be a mix of tokens and
 # mapping expressions
 #
+
+
+# NOTE: evaluation is a good candidate interview question tbh
 def evaluate(exprs: list[str], first_is_negative=False) -> dict[Optional[str], int]:
     # Splits by + and - first, then *, to follow order of operations
     # The first_is_negative flag helps us correctly interpret expressions
@@ -155,7 +158,9 @@ def eq_to_assembly(eq: str) -> AssemblyEqn:
             if key not in allowed_coeffs:
                 raise Exception("Disallowed multiplication: {}".format(key))
         # Return output
-        wires = variables + [None] * (2 - len(variables)) + [out]
+        wires = (
+            variables + [None] * (2 - len(variables)) + [out]
+        )  # NOTE: padding internal zero
         return AssemblyEqn(GateWires(wires[0], wires[1], wires[2]), coeffs)
     elif tokens[1] == "public":
         return AssemblyEqn(
