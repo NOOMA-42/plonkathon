@@ -147,7 +147,6 @@ class Prover:
 
         Z_values = [Scalar(0) for _ in range(group_order + 1)]
         Z_values[0] = Scalar(1)
-        print(self.pk.S1.values)
         for i in range(group_order):
             Z_values[i + 1] = Z_values[i] * Scalar(
                 (
@@ -162,6 +161,9 @@ class Prover:
                 )
             )
         # Check that the last term Z_n = 1
+        # 
+        # NOTE: Z_n is an accumulator for all the gate, Z_n-1 still lack 1 gate
+        # accumulator is valid means Z_n = 1, because a valid permutation means nomiator = denominator
         assert Z_values.pop() == 1
 
         # Sanity-check that Z was computed correctly
